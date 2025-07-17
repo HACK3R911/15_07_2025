@@ -24,9 +24,9 @@ func main() {
 	flag.Parse()
 
 	cfg := config.NewConfig(*port, utils.ParseExtensions(*extensions))
-	memStorage := repositories.NewMemoryStorage()
-	wp := worker.NewWorkerPool(3, memStorage)
-	handler := handler.NewArchiveHandler(memStorage, wp, cfg)
+	repository := repositories.NewRepository()
+	wp := worker.NewWorkerPool(3, repository)
+	handler := handler.NewArchiveHandler(repository, wp, cfg)
 
 	wp.Start()
 
@@ -53,5 +53,5 @@ func main() {
 	_ = server.Shutdown(ctx)
 
 	wp.Stop()
-	log.Println("Server exited properly")
+	log.Println("Server exited.")
 }
